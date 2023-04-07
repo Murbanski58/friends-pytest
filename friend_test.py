@@ -28,7 +28,7 @@ def test_calculate_current_age():
     birth_year = 2000
     today = date.today()
     expected_age = today.year - birth_year
-    print('/r')
+    print("\r")  # carriage return
     print(" -- calculate_current_age unit test")
     assert (
         calculate_current_age(birth_year) == expected_age
@@ -39,71 +39,76 @@ def test_calculate_future_age():
     """
     GIVEN a user's current age
     WHEN that age is passed to this function
-    THEN the user's age is accurately calculated to be 10 years into the future
+    THEN the user's age is accurately calculated +10
     """
-   
-    user_age = 20
-    print('/r')
+    current_age = 20
+    expected_age = current_age + 10
+    print("\r")
     print(" -- calculate_future_age unit test")
     assert (
-        calculate_future_age(user_age) == 30
-    )  
+        calculate_future_age(current_age) == expected_age
+    )
+
 
 def test_calculate_past_age():
     """
     GIVEN a user's current age
     WHEN that age is passed to this function
-    THEN the user's age is accurately calculated to be 10 years in the past
+    THEN the user's age is accurately calculated -10
     """
-   
     current_age = 20
     expected_age = current_age - 10
-    print('/r')
+    print("\r")
     print(" -- calculate_past_age unit test")
-    assert (
-        calculate_past_age(current_age) == expected_age
-    )  
+    assert calculate_past_age(current_age) == expected_age
 
 def test_add_friend():
-    first_name = "john"
-    last_name = "doe"
+    first_name = "John"
+    last_name = "Doe"
     current_age = 30
     future_age = 40
     past_age = 20
     add_friend(first_name, last_name, current_age, future_age, past_age)
-    print('/r')
+    print("\r")
     print(" -- add_friend unit test")
-    assert friend_list[-1]["name"] == "john doe"
+    assert friend_list[-1]["name"] == "John Doe"
     assert friend_list[-1]["age"] == 30
     assert friend_list[-1]["future"] == 40
     assert friend_list[-1]["past"] == 20
 
-    def test_collectUserDetails(monkeypatch):
-        input_values = ["john", "doe", "2000"]
-        def mock_input(s):
-            return(first_name, last_name, birth_year)
-                   
-    def main():
-        print(friend_list)
-        first_name, last_name, brith_year = collectUserDetails()
-        current_age = calculate_current_age(birth_year)
-        future_age= calculate_future_age(current_age)
-        past_age = calculate_past_age(current_age)
-        add_friend(first_name, last_name, current_age, future_age, past_age)
-        print(friend_list)
 
-    def test_main(monkeypatch, capsys):
-        input_values = ["Jane", "Doe", "1995"]
-        def mock_input(s): 
-            return input_values.pop(0)
-        monkeypatch.setattr("builtins.input", mock_input)
-        main() 
-        captured = capsys.readouterr()
-        assert "Jane Doe" in captured.out
-        assert friend_list [-1]["name"] == "Jane Doe"
-        assert friend_list [-1]["age"] == 26
-        assert friend_list [-1]["future"] == 36
-        assert friend_list [-1]["past"] == 16
+### Functional Tests ###
+
+def test_collectUserDetails(monkeypatch):
+    input_values = ["John", "Doe", "2000"]
+    def mock_input(s):
+        return input_values.pop(0)
+    monkeypatch.setattr('builtins.input', mock_input)
+    print("\r")
+    print(" -- collectUserDetails functional test")
+    assert collectUserDetails() == ("John", "Doe", 2000)
+
+# Assuming you have friend_list with one item in it already
+def test_main(monkeypatch, capsys):
+    today = date.today()
+    birth_year = 2000
+    expected_age = today.year - birth_year
+    future = expected_age + 10
+    past = expected_age - 10
+
+    input_values = ["Jane", "Doe", birth_year]
+    def mock_input(s):
+        return input_values.pop(0)
+    monkeypatch.setattr('builtins.input', mock_input)
+    main()
+    captured = capsys.readouterr()
+    print("\r")
+    print(" -- main functional test")
+    assert "Jane Doe" in captured.out
+    assert friend_list[-1]["name"] == "Jane Doe"
+    assert friend_list[-1]["age"] == expected_age
+    assert friend_list[-1]["future"] == future
+    assert friend_list[-1]["past"] == past
     
 
 
